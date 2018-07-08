@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.animusdevs.datamodel.ListItemClass;
+
 import java.util.List;
 
 public class ListItemAdapter extends RecyclerView.Adapter<ListItemViewHolder> {

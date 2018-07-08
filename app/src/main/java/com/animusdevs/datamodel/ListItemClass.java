@@ -1,4 +1,4 @@
-package com.animusdevs.recyclerviewexample;
+package com.animusdevs.datamodel;
 
 public class ListItemClass {
     //TODO: Define your own custom list item class
