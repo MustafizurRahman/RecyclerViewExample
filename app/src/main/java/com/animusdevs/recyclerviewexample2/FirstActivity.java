@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -18,11 +19,13 @@ import com.animusdevs.recyclerviewexample.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FirstActivity extends AppCompatActivity implements ListItemAdapterClickListener {
+public class FirstActivity extends AppCompatActivity implements ListItemAdapterClickListener,
+    View.OnClickListener{
     private List<ListItemClass> mItemArrayList;
     private ListItemAdapter2 mAdapter;
     private RecyclerView mRecyclerView;
-    private FloatingActionButton mFloatingAction;
+    private FloatingActionButton mFloatingActionBack;
+    private FloatingActionButton mFloatingActionAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +36,11 @@ public class FirstActivity extends AppCompatActivity implements ListItemAdapterC
             getSupportActionBar().setTitle(getResources().getString(R.string.app_name)+"2");
         }
 
-        mFloatingAction=findViewById(R.id.fab);
-        mFloatingAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(FirstActivity.this, MainActivity.class));
-                finish();
-            }
-        });
+        mFloatingActionBack=findViewById(R.id.fab);
+        mFloatingActionAdd=findViewById(R.id.fab_add_item);
+        mFloatingActionBack.setOnClickListener(this);
+        mFloatingActionAdd.setOnClickListener(this);
+
 
         mItemArrayList=new ArrayList<>();
         loadSomeItems();
@@ -51,8 +51,23 @@ public class FirstActivity extends AppCompatActivity implements ListItemAdapterC
 
         mRecyclerView=findViewById(R.id.rv_item_list);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this,1));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mAdapter);
 
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.fab_add_item:
+                mAdapter.addItem();
+                mRecyclerView.smoothScrollToPosition(0);
+                break;
+            case R.id.fab:
+                startActivity(new Intent(FirstActivity.this, MainActivity.class));
+                break;
+        }
     }
 
     @Override
@@ -62,6 +77,9 @@ public class FirstActivity extends AppCompatActivity implements ListItemAdapterC
             case R.id.btn_item_click:
                 Toast.makeText(this,"Showing "
                         +mItemArrayList.get(adapterPosition).getItemName(),Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.delete:
+                mAdapter.removeItem(adapterPosition);
                 break;
             default:
                 //This is the body click

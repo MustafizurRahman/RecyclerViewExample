@@ -39,6 +39,18 @@ public class ListItemAdapter2 extends RecyclerView.Adapter<ListItemViewHolder2> 
         return mItemArrayList!=null?mItemArrayList.size():0;
     }
 
+    public void addItem(){
+        mItemArrayList.add(0,new ListItemClass("Item name "
+                +(mItemArrayList.size()+1),"Item description "+(mItemArrayList.size()+1)));
+        notifyDataSetChanged();
+    }
+
+
+    public void removeItem(int position){
+        mItemArrayList.remove(position);
+        notifyItemRemoved(position);
+    }
+
     public void setOnItemClickListener(ListItemAdapterClickListener listener){
         this.mListener=listener;
     }
